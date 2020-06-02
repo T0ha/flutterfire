@@ -285,6 +285,15 @@ public class FirebaseMessagingPlugin extends BroadcastReceiver
       Boolean isEnabled = (Boolean) call.arguments();
       FirebaseMessaging.getInstance().setAutoInitEnabled(isEnabled);
       result.success(null);
+    } else if ("sendUpstreamMessage".equals(call.method)) {
+      Map<String, String> msg = (Map<String, String>) call.arguments();
+      FirebaseMessaging fm = FirebaseMessaging.getInstance();
+      RemoteMessage message = new RemoteMessage.Builder(msg.get("senderId") + "@fcm.googleapis.com")
+          .setMessageId(msg.get("messageId"))
+          .setData(msg)
+          .build();
+      fm.send(message);
+      result.success(null);
     } else {
       result.notImplemented();
     }

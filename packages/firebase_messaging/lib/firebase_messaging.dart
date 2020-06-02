@@ -182,6 +182,13 @@ class FirebaseMessaging {
     await _channel.invokeMethod<void>('setAutoInitEnabled', enabled);
   }
 
+  /// Send upstream message
+  ///
+  /// [message] message data as Map
+  Future<void> sendUpstreamMessage(Map<String, String> msg) {
+    return _channel.invokeMethod<void>('sendUpstreamMessage', msg);
+  }
+
   Future<dynamic> _handleMethod(MethodCall call) async {
     switch (call.method) {
       case "onToken":
