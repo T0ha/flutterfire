@@ -184,6 +184,15 @@ static NSObject<FlutterPluginRegistrar> *_registrar;
     NSNumber *value = call.arguments;
     [FIRMessaging messaging].autoInitEnabled = value.boolValue;
     result(nil);
+  } else if ([@"sendUpstreamMessage" isEqualToString:method]) {
+    NSDictionary *message = call.arguments;
+    NSString *senderId = [NSString stringWithFormat: @"%@@gcm.googleapis.com",
+                                                     message[@"senderId"]];
+    [[FIRMessaging messaging] sendMessage:message
+                                       to:senderId  
+                            withMessageID:message[@"messageId"]
+                               timeToLive:0];
+    result(nil);
   } else {
     result(FlutterMethodNotImplemented);
   }
